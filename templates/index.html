@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <canvas id="matrix-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content text-center">
+    <h1 class="display-4">Hi, I'm <span class="name">Nikhil Kumar</span></h1>
+    <p class="lead" id="typed-line">Web & Data Developer • Problem Solver • Lifelong Learner</p>
+    <div class="mt-4">
+      <a href="https://github.com/Nerd-Nikhil/" class="btn btn-outline-light btn-lg me-2" target="_blank">
+        <i class="lucide-github"></i> GitHub
+      </a>
+      <a href="https://linkedin.com/in/nikhil-singh-57b161199/" class="btn btn-outline-light btn-lg" target="_blank">
+        <i class="lucide-linkedin"></i> LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="container py-5" data-aos="fade-up">
+  <div class="row align-items-center">
+    <div class="col-md-4 text-center">
+      <div class="avatar-glow">
+        <img src="{{ url_for('static', filename='images/myPhoto.jpg') }}" class="rounded-circle img-fluid profile-img" alt="Nikhil">
+      </div>
+      <div class="mt-3 small text-muted">Based in Bangalore • B.Tech CSE • open to opportunities</div>
+    </div>
+    <div class="col-md-8">
+      <h2>About Me</h2>
+      <p>I build production-ready web apps and data-driven features. I enjoy clean code, good tests, and scalable architectures. I ride a motorcycle and lift heavy things at the gym.</p>
+      <ul class="list-unstyled">
+        <li>⚡ Speciality: Python, Flask, SQL, REST APIs, Data Analysis</li>
+        <li>📦 Tools: Docker, Git</li>
+        <li>📫 Open to internships & junior roles. Available for freelance projects.</li>
+      </ul>
+      <div class="mt-3">
+        <a href="https://github.com/Nerd-Nikhil/" class="btn btn-outline-dark me-2" target="_blank">
+          <i class="lucide-github"></i> GitHub
+        </a>
+        <a href="https://linkedin.com/in/nikhil-singh-57b161199/" class="btn btn-outline-primary" target="_blank">
+          <i class="lucide-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills" class="py-5 bg-dark text-light" data-aos="fade-up">
+  <div class="container">
+    <h2 class="text-center mb-4">Skills</h2>
+    <div class="row g-4">
+      {% for s in skills %}
+      <div class="col-sm-6 col-md-4 text-center">
+        <div class="skill-card p-3">
+          <img src="{{ url_for('static', filename=s.logo) }}" alt="{{ s.name }} logo" class="mb-2" style="height:48px;">
+          <h5 class="mt-2">{{ s.name }}</h5>
+          <small class="text-muted">{{ s.years }} yrs</small>
+          <div class="progress mt-3" style="height: 18px;">
+            <div class="progress-bar bg-primary" role="progressbar" 
+                 style="width: {{ s.level }}%;" 
+                 aria-valuenow="{{ s.level }}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+              {{ s.level }}%
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects" class="container py-5" data-aos="fade-up">
+  <h2 class="text-center mb-4">Projects</h2>
+  <div class="row g-4">
+    {% for p in projects %}
+    <div class="col-md-4">
+      <div class="card h-100">
+        <!-- Image Carousel -->
+        <div id="carousel{{ p.id }}" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {% for image in p.images %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+              <img src="{{ url_for('static', filename=image) }}" class="d-block w-100" alt="{{ p.title }}">
+            </div>
+            {% endfor %}
+          </div>
+          {% if p.images|length > 1 %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ p.id }}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ p.id }}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          {% endif %}
+        </div>
+        <!-- Card Content -->
+        <div class="card-body">
+          <h5 class="card-title">{{ p.title }}</h5>
+          <p class="card-text">{{ p.description }}</p>
+          <div class="tags mb-3">
+            {% for tag in p.tags %}
+            <span class="badge bg-secondary">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <a href="{{ p.repo }}" class="btn btn-outline-dark btn-sm" target="_blank">
+            <i class="lucide-github"></i> View Project
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="container py-5" data-aos="fade-up">
+  <h2 class="text-center mb-4">Get In Touch</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form action="{{ url_for('contact') }}" method="POST">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </div>
+      </form>
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
